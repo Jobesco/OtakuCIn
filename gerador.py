@@ -58,7 +58,7 @@ for i in range(DATASIZE):
         element = Usuario.attributes[key]()
         if (isinstance(element, Number)): s += f'{element}'
         elif (re.search(date_regex, str(element))): s += f"TO_DATE('{element}', 'YYYY-MM-DD')"
-        else: s += f'"{element}"'
+        else: s += f"'{element}'"
 
         if (i != len(items)-1): s += ', '
             

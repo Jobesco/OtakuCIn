@@ -22,27 +22,35 @@ class Sql_table:
 
 f = Faker('pt_BR')
 
-sex = lambda: np.random.choice([0, 1])
+sex = lambda: np.random.choice(['M', 'F'])
+num = lambda: np.random.randint(1,1000)
+tipo = lambda: np.random.choice(['Normal', 'Publicador'])
 
+# ! modifique aqui os campos
 user_table = {
+    # 'email': f.email,
+    'CPF': f.cpf,
+    'nome_usuario': f.name,
     'sexo': sex,
-    'email': f.email,
-    'nome': f.name,
     'd_nasc': f.date_of_birth,
-    'CPF': f.cpf
+    'end_cep': f.postcode,
+    'end_num': num,
+    'tipo': tipo
 }
 
 Usuario = Sql_table(
     attributes=user_table,
-    table_name='Usuario'
+    table_name='Usuario' # ! modifique aqui o nome da tabela
 )
+
+DATASIZE = 100
 
 Usuario.generate_fields()
 
 populate = "INSERT INTO {{ tabela }}{{ campos }} VALUES ({{ dados }});\n"
 template = jinja2.Template(populate)
 
-for i in range(20):
+for i in range(DATASIZE):
     s = str()
     items = Usuario.attributes.items()
     for i, (key, item) in enumerate(items):

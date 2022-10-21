@@ -1,9 +1,10 @@
-from datetime import datetime
 import jinja2
 import numpy as np
 from numbers import Number
 from faker import Faker
+import re
 
+date_regex = "^[0-9]{4}-[0-9]{2}-[0-9]{2}"
 class Sql_table:
     attributes: dict
     table_name: str
@@ -48,6 +49,7 @@ for i in range(20):
     for i, (key, item) in enumerate(items):
         element = Usuario.attributes[key]()
         if (isinstance(element, Number)): s += f'{element}'
+        elif (re.search(date_regex, str(element))): s += f"TO_DATE('{element}', 'YYYY-MM-DD')"
         else: s += f'"{element}"'
 
         if (i != len(items)-1): s += ', '

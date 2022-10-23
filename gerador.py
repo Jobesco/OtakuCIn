@@ -9,9 +9,9 @@ class Sql_table:
     attributes: dict
     table_name: str
 
-    def __init__(self, attributes, table_name) -> None:
+    def __init__(self, attributes=None, table_name=None) -> None:
         self.attributes = attributes
-        self.table_name = table_name
+        self.table_name = table_name    
 
     def generate_fields(self):
         s = '('
@@ -20,6 +20,23 @@ class Sql_table:
             s += (key + (', ' if i != len(keys)-1 else ''))
         s += ')'
         return s
+
+    def generate_data(self, datasize, template, table_name=None):
+        if table_name == None: table_name = self.table_name
+
+        for i in range(datasize):
+            s = str()
+            items = Usuario.attributes.items()
+            for i, (key, item) in enumerate(items):
+                element = Usuario.attributes[key]()
+                if (isinstance(element, Number)): s += f'{element}'
+                elif (re.search(date_regex, str(element))): s += f"TO_DATE('{element}', 'YYYY-MM-DD')"
+                else: s += f"'{element}'"
+
+                if (i != len(items)-1): s += ', '
+                    
+            print(template.render(tabela = Usuario.table_name, campos = Usuario.generate_fields(), dados=s))
+        
 
 f = Faker('pt_BR')
 
@@ -39,6 +56,9 @@ user_table = {
     'tipo': tipo
 }
 
+table_name = "Usuario"
+populate = "INSERT INTO {{ tabela }}{{ campos }} VALUES ({{ dados }});\n"
+template = jinja2.Template(populate)
 Usuario = Sql_table(
     attributes=user_table,
     table_name='Usuario' # ! modifique aqui o nome da tabela
@@ -46,23 +66,12 @@ Usuario = Sql_table(
 
 DATASIZE = 100
 
-Usuario.generate_fields()
+Usuario.generate_data(DATASIZE, template, user_table, table_name)
 
-populate = "INSERT INTO {{ tabela }}{{ campos }} VALUES ({{ dados }});\n"
-template = jinja2.Template(populate)
 
-for i in range(DATASIZE):
-    s = str()
-    items = Usuario.attributes.items()
-    for i, (key, item) in enumerate(items):
-        element = Usuario.attributes[key]()
-        if (isinstance(element, Number)): s += f'{element}'
-        elif (re.search(date_regex, str(element))): s += f"TO_DATE('{element}', 'YYYY-MM-DD')"
-        else: s += f"'{element}'"
 
-        if (i != len(items)-1): s += ', '
-            
-    print(template.render(tabela = Usuario.table_name, campos = Usuario.generate_fields(), dados=s))
+
+
 
 
 

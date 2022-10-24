@@ -197,7 +197,7 @@ sql_generator.generate_data(
 
 # Episódio
 episodio_table = {
-    "titulo": lambda: f.sentence(nb_words=5, variable_nb_words=True),
+    "titulo": lambda: f.sentence(nb_words=3, variable_nb_words=True),
     "id_obra": lambda: choice(sql_generator.tabelas['Obra']['id_obra']),
     "numero": lambda: randint(1, 100) 
 }
@@ -232,7 +232,7 @@ sql_generator.generate_data(
 # lambda: choice(sql_generator.tabelas['Episodio']['numero']) = choice(sql_generator.tabelas['Episodio']['numero'])
 
 tem_table = {
-    "id_obra": lambda: choice(sql_generator.tabelas['Obra']['id_obra']),
+    "id_obra": lambda: choice(sql_generator.tabelas['Episodio']['id_obra']),
     "numero": lambda: choice(sql_generator.tabelas['Episodio']['numero']),
     "id_personagem": lambda: choice(sql_generator.tabelas['Personagem']['id_personagem']),
     "id_dublador": lambda: choice(sql_generator.tabelas['Dublador']['id_dublador'])

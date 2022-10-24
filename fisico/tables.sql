@@ -81,8 +81,8 @@ CREATE TABLE Tem(
 
 -- Relações
 CREATE TABLE Amizade(
-  cpf_convidado VARCHAR(50) REQUIRED NOT NULL,
-  cpf_convidador VARCHAR(50) REQUIRED NOT NULL,
+  cpf_convidado VARCHAR(50),
+  cpf_convidador VARCHAR(50),
   CONSTRAINT pk_amizade PRIMARY KEY (cpf_convidado, cpf_convidador),
   CONSTRAINT fk_convidado FOREIGN KEY (cpf_convidado) REFERENCES Usuario (cpf),
   CONSTRAINT fk_convidador FOREIGN KEY (cpf_convidador) REFERENCES Usuario (cpf)

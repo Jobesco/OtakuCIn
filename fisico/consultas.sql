@@ -84,4 +84,20 @@ WHERE eh_anime AND (nome_obra IN (SELECT nome_obra
                                     WHERE eh_manga))
 
 -- Operação de conjunto
--- TODO
+-- , todos os selos e categorias de uma obra
+SELECT s.nome_selo
+FROM Selo s INNER JOIN
+    Ganhou g ON s.nome_selo = g.nome_selo
+WHERE g.id_obra = (SELECT id_obra 
+                FROM Obra 
+                WHERE nome_obra = 'NOME DA OBRA!!!!!!!'
+                FETCH FIRST 1 ROWS ONLY) -- ! reutilizável?
+UNION ALL(
+SELECT c.nome_categoria
+FROM Categoria c INNER JOIN
+WHERE g.id_obra = (SELECT id_obra 
+                FROM Obra 
+                WHERE nome_obra = 'NOME DA OBRA!!!!!!!'
+                FETCH FIRST 1 ROWS ONLY));
+
+

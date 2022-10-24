@@ -226,14 +226,18 @@ sql_generator.generate_data(
     verbose=True
 )
 
-# Tem
-# lambda: choice(sql_generator.tabelas['Personagem']['id_personagem']) = choice(sql_generator.tabelas['Personagem']['id_personagem'])
-# lambda: choice(sql_generator.tabelas['Dublador']['id_dublador']) = choice(sql_generator.tabelas['Dublador']['id_dublador'])
-# lambda: choice(sql_generator.tabelas['Episodio']['numero']) = choice(sql_generator.tabelas['Episodio']['numero'])
+stack = []
+def func():
+    df = sql_generator.tabelas['Episodio']
+    if (len(stack) == 0):
+        stack.append(df['id_obra'])
+        stack.append(df['numero'])
+        
+    return stack.pop()
 
 tem_table = {
-    "id_obra": lambda: choice(sql_generator.tabelas['Episodio']['id_obra']),
-    "numero": lambda: choice(sql_generator.tabelas['Episodio']['numero']),
+    "id_obra": lambda: func(),
+    "numero": lambda: func(),
     "id_personagem": lambda: choice(sql_generator.tabelas['Personagem']['id_personagem']),
     "id_dublador": lambda: choice(sql_generator.tabelas['Dublador']['id_dublador'])
 }

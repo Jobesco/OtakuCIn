@@ -229,11 +229,13 @@ sql_generator.generate_data(
 stack = []
 def func():
     df = sql_generator.tabelas['Episodio']
+    element = df.sample()
+    id_obra, numero = element['id_obra'].values[0], element['numero'].values[0]
     if (len(stack) == 0):
-        stack.append(df['id_obra'])
-        stack.append(df['numero'])
+        stack.append(id_obra)
+        stack.append(numero)
         
-    return stack.pop()
+    return stack.pop(0)
 
 tem_table = {
     "id_obra": lambda: func(),
